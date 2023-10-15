@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Pipe : MonoBehaviour
 {
-    public float speed;
+    public static float speed;
     public float startX;
     public float endX;
 

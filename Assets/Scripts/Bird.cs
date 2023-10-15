@@ -4,17 +4,55 @@ using TMPro;
 
 public class Bird : MonoBehaviour
 {
-    public float jumpSpeed;
-    public int score = 0;
     public TMP_Text scoreText;
     public AudioSource scoreSound;
+    public GameObject endScreen;
+    public GameObject bgDay;
+    public GameObject bgNight;
+    public GameObject yellow;
+    public GameObject blue;
+    public GameObject red;
+
+    public int score = 0;
+    public float jumpSpeed;
+    public float speed;
+    Rigidbody2D rb;
 
     private readonly float rotatePower = 3;
-    Rigidbody2D rb;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        Pipe.speed = speed;
+        bool isDay = (Random.value > 0.5f); // 0 = false; 1 = day
+
+        if (isDay)
+        {
+            bgDay.SetActive(true);
+            bgNight.SetActive(false);
+
+            if (Random.value > 0.5f) // false = yellow; true = blue
+            {
+                yellow.SetActive(false);
+                blue.SetActive(true);
+                red.SetActive(false);
+            }
+            else
+            {
+                yellow.SetActive(true);
+                blue.SetActive(false);
+                red.SetActive(false);
+            }
+        }
+        else
+        {
+            bgDay.SetActive(false);
+            bgNight.SetActive(true);
+
+            yellow.SetActive(false);
+            blue.SetActive(false);
+            red.SetActive(true);
+        }
     }
 
     private void Update()
@@ -29,8 +67,24 @@ public class Bird : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        var currentScene = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentScene);
+        Die();
+    }
+
+    void Die()
+    {
+        Pipe.speed = 0;
+        jumpSpeed = 0;
+
+        Invoke("ShowMenu", 1f);
+
+        //var currentScene = SceneManager.GetActiveScene().name;
+        //SceneManager.LoadScene(currentScene);
+    }
+
+    void ShowMenu()
+    {
+        endScreen.SetActive(true);
+        scoreText.gameObject.SetActive(false);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
