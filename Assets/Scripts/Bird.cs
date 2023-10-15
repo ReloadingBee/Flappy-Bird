@@ -8,6 +8,7 @@ public class Bird : MonoBehaviour
     public int score = 0;
     public TMP_Text scoreText;
     public AudioSource scoreSound;
+
     private readonly float rotatePower = 3;
     Rigidbody2D rb;
 
@@ -35,7 +36,7 @@ public class Bird : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         score++;
-        scoreText.SetText(score.ToString());
+        scoreText.text = score.ToString();
         scoreSound.Play();
     }
 }
